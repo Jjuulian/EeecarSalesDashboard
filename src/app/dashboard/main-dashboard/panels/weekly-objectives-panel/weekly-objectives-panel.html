@@ -1,1 +1,89 @@
-<p>weekly-objectives-panel works!</p>
+<div class="card">
+    <div class="wo-card">
+        <div class="wo-top">
+            <div class="wo-top-left">
+            <div class="wo-title">OBJETIVO {{ monthLabel }}</div>
+            </div>
+
+            <div class="wo-top-right">
+            <div class="wo-kpi">
+                <span class="k">TOTAL</span>
+                <span class="v">{{ totalMonth | number:'1.0-0' }} €</span>
+            </div>
+            </div>
+        </div>
+
+        <div class="wo-body">
+            <table class="wo-table">
+            <thead>
+                <tr class="group-row">
+                <th class="th-week">SEMANA</th>
+                <th class="th-group" colspan="3">PROFORMADOS</th>
+                <th class="th-group-purple" colspan="3">COBRADOS</th>
+                <th class="th-objective">OBJETIVO</th>
+                <th class="th-accumulated">ACUMULADO</th>
+                </tr>
+
+                <tr class="sub-row">
+                <th class="th"></th>
+                <th class="th">EUROPE</th>
+                <th class="th">VG</th>
+                <th class="th">TOTAL</th>
+                <th class="th">EUROPE</th>
+                <th class="th">VG</th>
+                <th class="th">TOTAL</th>
+                <th class="th"></th>
+                <th class="th"></th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr *ngFor="let w of weeks; let i = index">
+                <td class="td-week">
+                    <div class="week-box"><strong>{{ w.label }}</strong></div>
+                </td>
+
+                <td class="td-num">{{ moneyOrDash(w.proformedEu) }}</td>
+                <td class="td-num">{{ moneyOrDash(w.proformedVG) }}</td>
+                <td class="td-num total-cell">{{ dashTotal(w.proformedEu, w.proformedVG) }}</td>
+
+                <td class="td-num">{{ moneyOrDash(w.chargedEU) }}</td>
+                <td class="td-num">{{ moneyOrDash(w.chargedVG) }}</td>
+                <td class="td-num total-cell">{{ dashTotal(w.chargedEU, w.chargedVG) }}</td>
+
+                <td class="td">
+                    <div class="obj-box">{{ (w.objective || 0) | number:'1.2-2' }} €</div>
+                </td>
+
+                <td class="td">
+                    <div class="acu-box" *ngIf="w.accumulated != null">
+                    {{ w.accumulated | number:'1.2-2' }} €
+                    </div>
+                </td>
+
+                </tr>
+
+                <tr class="footer">
+                    <td class="td footer-label">OBJETIVO MES</td>
+
+                    <td class="td-num total-cell">{{ moneyOrDash(totalProformedEU) }}</td>
+                    <td class="td-num total-cell">{{ moneyOrDash(totalProformedVG) }}</td>
+                    <td class="td-num total-cell">{{ moneyOrDash(totalProformed) }}</td>
+
+                    <td class="td-num total-cell">{{ moneyOrDash(totalChargedEU) }}</td>
+                    <td class="td-num total-cell">{{ moneyOrDash(totalChargedVG) }}</td>
+                    <td class="td-num total-cell">{{ moneyOrDash(totalCharged) }}</td>
+
+                    <td class="td">
+                        <div class="obj-box">{{ totalMonth | number:'1.2-2' }} €</div>
+                    </td>
+
+                    <td class="td">
+                        <div class="acu-box">{{ (weeks?.[weeks.length-1]?.accumulated ?? 0) | number:'1.2-2' }} €</div>
+                    </td>
+                </tr>
+            </tbody>
+            </table>
+        </div>
+    </div>
+</div>

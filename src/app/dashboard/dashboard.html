@@ -15,16 +15,10 @@
 
   <section class="tabs">
     <button class="tab" [class.active]="activeTab==='resumen'" (click)="activeTab='resumen'">
-      <span class="ico">
-        <svg viewBox="0 0 24 24"><path d="M4 4h7v7H4V4Zm9 0h7v4h-7V4ZM4 13h7v7H4v-7Zm9 6v-9h7v9h-7Z"/></svg>
-      </span>
       Resumen
     </button>
 
     <button class="tab" [class.active]="activeTab==='propios'" (click)="activeTab='propios'">
-      <span class="ico">
-        <svg viewBox="0 0 24 24"><path d="M12 12a4 4 0 1 0-4-4 4 4 0 0 0 4 4Zm0 2c-4.4 0-8 2.2-8 5v1h16v-1c0-2.8-3.6-5-8-5Z"/></svg>
-      </span>
       Propios
     </button>
   </section>

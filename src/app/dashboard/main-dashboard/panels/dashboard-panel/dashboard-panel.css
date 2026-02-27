@@ -1,6 +1,5 @@
 .panel-box{
     display: flex;
-    padding: auto;
 
     border-radius: 16px;
     justify-content: center;
@@ -10,9 +9,8 @@
     align-items: flex-end;
     min-height: 20vh;
     min-width: 20vw;
-    height: 50%;
+    height: 70%;
     width: 100%;
-    margin: 0;
 
     background: linear-gradient(
         180deg,
