@@ -1,0 +1,21 @@
+<div>
+    <div class="top-tabs">
+        <section class="dashboard-panel">
+            <app-dashboard-panel [panelTitle]="'Número de Ventas'" [value]="1234"></app-dashboard-panel>
+        </section>
+        <section class="dashboard-panel">
+            <app-dashboard-panel [panelTitle]="'Total de Ventas'" [value]="1234" [currency]="true"></app-dashboard-panel>
+        </section>
+        <section class="dashboard-panel">
+            <app-dashboard-panel [panelTitle]="'Beneficio Neto Total'" [value]="1234" [currency]="true"></app-dashboard-panel>
+        </section>
+     </div>
+    <div class="bottom-tabs">
+        <section class="graphic-panel">
+            <app-graphic-panel [incomePoints]=incomePoints [benefitsPoints]=benefitsPoints ></app-graphic-panel>
+        </section>
+        <section class="weekly-objectives">
+            <app-weekly-objectives-panel></app-weekly-objectives-panel>
+        </section>
+    </div>
+</div>

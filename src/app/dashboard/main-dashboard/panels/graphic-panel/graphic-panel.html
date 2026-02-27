@@ -1,0 +1,45 @@
+<div class="card">
+  <div class="head">
+    <h2>Ingresos y Beneficios</h2>
+    <p>Evolución semanal</p>
+  </div>
+
+  <div class="chart">
+    <svg *ngIf="(incomePoints?.length || 0) + (benefitsPoints?.length || 0) > 0"
+         [attr.viewBox]="'0 0 ' + width + ' ' + height">
+
+      <path class="area" [attr.d]="buildArea(incomePoints)"></path>
+      <path class="line purple" [attr.d]="buildPath(incomePoints)"></path>
+      <path class="line green" [attr.d]="buildPath(benefitsPoints)"></path>
+
+      <g class="dots income">
+        <circle *ngFor="let p of coords(incomePoints)"
+                class="dot"
+                [attr.cx]="p.x"
+                [attr.cy]="p.y"
+                r="4.5"
+                (mouseenter)="onEnter('income', p.i)"
+                (mouseleave)="onLeave()"/>
+      </g>
+
+      <g class="dots benefit">
+        <circle *ngFor="let p of coords(benefitsPoints)"
+                class="dot"
+                [attr.cx]="p.x"
+                [attr.cy]="p.y"
+                r="4"
+                (mouseenter)="onEnter('benefit', p.i)"
+                (mouseleave)="onLeave()"/>
+      </g>
+
+      
+        <g *ngIf="hoveredPoint as hp"
+        class="tip"
+        [attr.transform]="'translate(' + tipX(hp.x) + ',' + (hp.y - 34) + ')'">
+        <rect x="0" y="0" rx="8" ry="8" [attr.width]="tipW(hp.v)" height="24"></rect>
+        <text x="10" y="16">{{ formatValue(hp.v) }}</text>
+        </g>
+
+    </svg>
+  </div>
+</div>

@@ -1,0 +1,18 @@
+.top-tabs {
+    display: flex;
+    justify-content: space-between;
+    align-content: center;
+    padding: 2%;
+    width: 100%;
+    margin: 0;
+}
+
+.bottom-tabs {
+    display: flex;
+    justify-content: space-between;
+    align-content: center;
+    flex-direction: column;
+    padding: 2%;
+    width: 100%;
+    margin: 0;
+}
