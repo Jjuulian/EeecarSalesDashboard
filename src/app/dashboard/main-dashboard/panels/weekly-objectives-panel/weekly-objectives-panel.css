@@ -140,3 +140,18 @@
   font-weight:800;
   cursor:pointer;
 }
+
+.total-cell {
+  font-weight: 600;
+  transition: color 0.2s ease, background 0.2s ease;
+}
+
+.total-cell.above-objective,
+obj-box.above-objective {
+  color: #22c55e;
+}
+
+.total-cell.below-objective,
+obj-box.below-objective {
+  color: #ef4444;
+}

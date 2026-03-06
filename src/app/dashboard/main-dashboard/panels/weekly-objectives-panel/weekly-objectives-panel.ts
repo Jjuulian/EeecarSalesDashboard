@@ -33,9 +33,9 @@ function buildRowsForMonth(date = new Date()): WeekRow[] {
     proformedVG: null,
     chargedEU: null,
     chargedVG: null,
-    objective: 0,          
+    objective: 0,
     accumulated: null,
-    days: r.daysInMonth, 
+    days: r.daysInMonth,
   }));
 }
 
@@ -46,13 +46,7 @@ function toISODateLocal(d: Date) {
   return `${y}-${m}-${day}`;
 }
 
-function businessDaysOverlapInMonthWithHolidays(
-  start: Date,
-  end: Date,
-  year: number,
-  month0: number,
-  holidaySet: Set<string>
-) {
+function businessDaysOverlapInMonthWithHolidays(start: Date, end: Date, year: number, month0: number, holidaySet: Set<string>) {
   const monthStart = new Date(year, month0, 1);
   const monthEnd = new Date(year, month0 + 1, 0);
   monthStart.setHours(0,0,0,0);
@@ -67,7 +61,7 @@ function businessDaysOverlapInMonthWithHolidays(
   d.setHours(0,0,0,0);
 
   while (d <= to) {
-    const dow = d.getDay(); 
+    const dow = d.getDay();
     const iso = toISODateLocal(d);
 
     const isWeekday = dow >= 1 && dow <= 5;
@@ -114,7 +108,8 @@ export function buildWeeksForMonth(date = new Date(), holidays: string[] = []): 
     const sm = pad2(start.getMonth() + 1);
     const em = pad2(end.getMonth() + 1);
 
-    const label = `${weekNo} (${pad2(start.getDate())}-${pad2(end.getDate())}/${pad2(end.getMonth() + 1)})`;
+    const label = `${weekNo} (${pad2(start.getDate())}/${pad2(start.getMonth()+1)}-${pad2(end.getDate())}/${pad2(end.getMonth()+1)})`;
+
     weeks.push({
       index: weekNo - 1,
       start,
@@ -142,7 +137,6 @@ export class WeeklyObjectivesPanel implements OnInit {
   @Input() data!: WeeklyObjectives;
   @Input() holidays: string [] = [];
   private timer?: number;
-  perDay: number = 7500;
 
   euro(n: number | null) {  
     if (n === null) return '';
@@ -150,8 +144,8 @@ export class WeeklyObjectivesPanel implements OnInit {
   }
 
   monthLabel = new Date().toLocaleString('es-ES', { month: 'long' }).toUpperCase();
-  totalMonth = 150000;
-  daysMonth = 20;
+  dailyObjective = 7500;
+  daysMonth = 0;
   weeks: WeekRow[] = buildRowsForMonth();
 
   ngOnInit() {
@@ -175,15 +169,14 @@ export class WeeklyObjectivesPanel implements OnInit {
   recalc() {
     const now = new Date();
 
-    this.monthLabel = now.toLocaleString('es-ES', { month: 'long' }).toUpperCase();
-    this.daysMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
-
     const calendar = buildWeeksForMonth(now, this.holidays)
       .filter(w => w.daysInMonth > 0);
 
+    this.monthLabel = now.toLocaleString('es-ES', { month: 'long' }).toUpperCase();
+    this.daysMonth = calendar.reduce((s, w) => s + w.daysInMonth, 0);
+
     if (this.data?.weeks?.length) {
-      this.totalMonth = this.data.totalMonth;
-      this.perDay = this.data.day ?? this.perDay; 
+      this.dailyObjective = this.data.day ?? this.dailyObjective; 
 
       const n = Math.min(calendar.length, this.data.weeks.length);
 
@@ -196,29 +189,19 @@ export class WeeklyObjectivesPanel implements OnInit {
         chargedEU: this.data.weeks[i].chargedEU ?? null,
         chargedVG: this.data.weeks[i].chargedVG ?? null,
 
-        objective: this.perDay * calendar[i].daysInMonth,
+        objective: this.dailyObjective * calendar[i].daysInMonth,
         accumulated: null,
       }));
 
       let acc = 0;
       this.weeks = this.weeks.map(w => {
-        acc += w.objective;
+        const weekTotalProformed = (w.proformedEu ?? 0) + (w.proformedVG ?? 0);
+        acc += weekTotalProformed;
         return { ...w, accumulated: acc };
       });
 
       return;
     }
-
-    this.weeks = calendar.map(r => ({
-      label: r.label,
-      days: r.daysInMonth,
-      proformedEu: null,
-      proformedVG: null,
-      chargedEU: null,
-      chargedVG: null,
-      objective: this.perDay * r.daysInMonth,
-      accumulated: null,
-    }));
   }
   
 
@@ -244,5 +227,23 @@ export class WeeklyObjectivesPanel implements OnInit {
   }
   get totalCharged(): number {
     return this.totalChargedEU + this.totalChargedVG;
+  }
+
+  get visibleObjectiveTotal(): number {
+    return this.sum(this.weeks.map(w => w.objective));
+  }
+
+  get visibleAccumulatedTotal(): number {
+    return this.weeks.length ? (this.weeks[this.weeks.length - 1].accumulated ?? 0) : 0;
+  }
+
+  isWeekAboveObjective(w: WeekRow): boolean {
+    const total = (w.proformedEu ?? 0) + (w.proformedVG ?? 0);
+    return total >= (w.objective ?? 0);
+  }
+
+  isTotalAboveObjective(): boolean {
+    const total = this.totalProformed;
+    return total >= this.visibleObjectiveTotal;
   }
 }

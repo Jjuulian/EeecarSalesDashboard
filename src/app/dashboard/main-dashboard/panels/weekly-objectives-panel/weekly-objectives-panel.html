@@ -8,7 +8,7 @@
             <div class="wo-top-right">
             <div class="wo-kpi">
                 <span class="k">TOTAL</span>
-                <span class="v">{{ totalMonth | number:'1.0-0' }} €</span>
+                <span class="v">{{ dailyObjective | number:'1.0-0' }} €</span>
             </div>
             </div>
         </div>
@@ -45,11 +45,11 @@
 
                 <td class="td-num">{{ moneyOrDash(w.proformedEu) }}</td>
                 <td class="td-num">{{ moneyOrDash(w.proformedVG) }}</td>
-                <td class="td-num total-cell">{{ dashTotal(w.proformedEu, w.proformedVG) }}</td>
+                <td class="td-num total-cell" [ngClass]="{ 'above-objective': isWeekAboveObjective(w), 'below-objective': !isWeekAboveObjective(w) }">{{ dashTotal(w.proformedEu, w.proformedVG) }}</td>
 
                 <td class="td-num">{{ moneyOrDash(w.chargedEU) }}</td>
                 <td class="td-num">{{ moneyOrDash(w.chargedVG) }}</td>
-                <td class="td-num total-cell">{{ dashTotal(w.chargedEU, w.chargedVG) }}</td>
+                <td class="td-num total-cell" [ngClass]="{ 'above-objective': isWeekAboveObjective(w), 'below-objective': !isWeekAboveObjective(w) }">{{ dashTotal(w.chargedEU, w.chargedVG) }}</td>
 
                 <td class="td">
                     <div class="obj-box">{{ (w.objective || 0) | number:'1.2-2' }} €</div>
@@ -75,11 +75,11 @@
                     <td class="td-num total-cell">{{ moneyOrDash(totalCharged) }}</td>
 
                     <td class="td">
-                        <div class="obj-box">{{ totalMonth | number:'1.2-2' }} €</div>
+                        <div class="obj-box" [ngClass]="{ 'above-objective': isTotalAboveObjective(), 'below-objective': !isTotalAboveObjective() }">{{ visibleObjectiveTotal | number:'1.2-2' }} €</div>
                     </td>
 
                     <td class="td">
-                        <div class="acu-box">{{ (weeks?.[weeks.length-1]?.accumulated ?? 0) | number:'1.2-2' }} €</div>
+                        <div class="acu-box">{{ visibleAccumulatedTotal | number:'1.2-2' }} €</div>
                     </td>
                 </tr>
             </tbody>

@@ -19,10 +19,10 @@ export class MainDashboard {
     totalMonth: 150000,
     day: 7500,
     weeks: [
-      { label: "Semana 1", proformedEu: 2, proformedVG: 1, chargedEU: 1, chargedVG: 1, objective: 37500, accumulated: 10000 },
-      { label: "Semana 2", proformedEu: 3, proformedVG: 2, chargedEU: 2, chargedVG: 2, objective: 37500, accumulated: 75000 },
-      { label: "Semana 3", proformedEu: 4, proformedVG: 3, chargedEU: 3, chargedVG: 3, objective: 37500, accumulated: 112500 },
-      { label: "Semana 4", proformedEu: 5, proformedVG: 4, chargedEU: 4, chargedVG: 4, objective: 37500, accumulated: 150000 },
+      { label: "Semana 1", proformedEu: 80000, proformedVG: 1, chargedEU: 1, chargedVG: 1, objective: 37500, accumulated: 10000 },
+      { label: "Semana 2", proformedEu: 10000, proformedVG: 2, chargedEU: 2, chargedVG: 2, objective: 37500, accumulated: 75000 },
+      { label: "Semana 3", proformedEu: 25000, proformedVG: 3, chargedEU: 3, chargedVG: 3, objective: 37500, accumulated: 112500 },
+      { label: "Semana 4", proformedEu: 80000, proformedVG: 4, chargedEU: 4, chargedVG: 4, objective: 37500, accumulated: 150000 },
     ],
     daysInMonth: 20
   };
